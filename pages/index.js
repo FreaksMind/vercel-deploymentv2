@@ -85,7 +85,7 @@ export default function Home() {
           ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`
           : "http://localhost:3000/api";
         
-        const response = await fetch(`https://3768-2a02-2f00-c40a-7a00-3930-14c7-a74f-a914.ngrok-free.app/api/post_question`, {
+        const response = await fetch(`https://b29b-194-176-167-88.ngrok-free.app/api/post_question`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
