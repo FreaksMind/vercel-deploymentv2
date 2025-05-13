@@ -112,7 +112,7 @@ export default function Home() {
             return;
         }
 
-    setMessages((prevMessages) => [...prevMessages, { "message": data.message, "type": "apiMessage" }]);
+    setMessages((prevMessages) => [...prevMessages, { "message": data.answer, "type": "apiMessage" }]);
     setLoading(false);
   };
 
