@@ -80,8 +80,12 @@ export default function Home() {
 
         setLoading(true);
         setMessages((prevMessages) => [...prevMessages, { "message": userInput, "type": "userMessage" }]);
-
-        const response = await fetch("http://localhost:5000/api/post_question", {
+        
+        const URL = process.env.NEXT_PUBLIC_VERCEL_URL
+          ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`
+          : "http://localhost:3000/api";
+        
+        const response = await fetch(`${URL}/post_question`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
