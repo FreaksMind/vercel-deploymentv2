@@ -199,7 +199,7 @@ export default function Home() {
     return (
     <>
       <Head>
-        <title>FiiHelp</title>
+        <title>FiiiHelp</title>
       </Head>
       <div className={isDarkMode ? styles.dark : styles.light}>
         <div className={styles.topnav}>
