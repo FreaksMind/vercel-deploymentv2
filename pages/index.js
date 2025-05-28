@@ -184,7 +184,7 @@ export default function Home() {
         setLoading(true);
         setMessages((prevMessages) => [...prevMessages, { "message": userInput, "type": "userMessage" }]);
 
-        const response = await fetch("https://adbc-89-45-207-54.ngrok-free.app/api/post_question", {
+        const response = await fetch("https://c0e6-89-45-207-54.ngrok-free.app/api/post_question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -218,7 +218,7 @@ export default function Home() {
         
         // Send the question to the backend
         try {
-          const response = await fetch("https://adbc-89-45-207-54.ngrok-free.app/api/post_question", {
+          const response = await fetch("https://c0e6-89-45-207-54.ngrok-free.app/api/post_question", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
