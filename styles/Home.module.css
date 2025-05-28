@@ -54,7 +54,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.5rem;
   background: var(--input-bg);
   border-bottom: 1px solid #1f2227;
@@ -242,8 +242,12 @@
   transition: background 0.2s ease;
 }
 
-.generatebutton:hover {
+.dark .generatebutton:hover {
   background: #1f2227;
+}
+
+.light .generatebutton:hover {
+  background: #cbc6c6;
 }
 
 .generatebutton:disabled {
@@ -439,8 +443,148 @@
 
 .light .recordButton,
 .dark .recordButton {
-  background-color: #ef4444;
+  background-color: #147487;
   color: white;
+}
+
+/* === RESOURCES === */
+.resourcesContainer {
+  position: relative;
+  display: inline-block;
+  margin-right: auto;
+}
+
+.resourcesButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 32px;
+}
+
+.dark .resourcesButton {
+  background-color: var(--bg);
+  color: white;
+}
+
+.dark .resourcesButton:hover {
+  background-color: #1b1b1b;
+}
+
+.light .resourcesButton {
+  background-color: white;
+  color: black;
+}
+
+.light .resourcesButton:hover {
+  background-color: #cbc6c6;
+}
+
+.resourcesDropdown {
+  position: absolute;
+  left: 0;  
+  top: 100%;
+  margin-top: 5px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dark .resourcesDropdown {
+  background-color: #2a2b32;
+  border-color: #4d4d4f;
+}
+
+.light .resourcesDropdown {
+  background-color: white;
+  border-color: #e5e5e5;
+}
+
+.resourcesDropdown ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resourceItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+
+.resourceItem:hover {
+  text-decoration: none;
+}
+
+.dark .resourceItem {
+  color: #ececf1;
+}
+
+.dark .resourceItem:hover {
+  background-color: #3e3f4b;
+}
+
+.light .resourceItem {
+  color: #202123;
+}
+
+.light .resourceItem:hover {
+  background-color: #f1f1f1;
+}
+
+.resourceIcon {
+  margin-right: 10px;
+}
+
+/* === QUESTIONS === */
+.quickQuestionsContainer {
+  width: 100%;
+  padding: 1rem;
+}
+
+/* For the quick questions component */
+.quickQuestionsContainer h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.quickQuestionsContainer button {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+.dark .quickQuestionsContainer button {
+  background: var(--bubble-bg);
+  color: var(--text, #000);
 }
 
 /* === MOBILE === */
@@ -462,6 +606,9 @@
   }
 
   .topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1rem 1.5rem;
   }
 
@@ -517,7 +664,7 @@
 /* Recording indicator */
 .recordingIndicator {
   margin-top: 8px;
-  color: #ef4444;
+  color: #147487;
   font-weight: 500;
   text-align: right;
   font-size: 0.9rem;
@@ -530,7 +677,7 @@
 .recordingDot {
   width: 8px;
   height: 8px;
-  background-color: #ef4444;
+  background-color: #147487;
   border-radius: 50%;
   animation: pulse 1.5s infinite;
 }
@@ -539,4 +686,143 @@
   0% { opacity: 1; }
   50% { opacity: 0.3; }
   100% { opacity: 1; }
+}
+
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.description {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.description h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.description p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.categoriesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 2rem;
+  max-width: 800px;
+}
+
+.categoryBox {
+  background-color: var(--background-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.categoryBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.categoryBox h3 {
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Questions List Styles */
+.questionsList {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.questionItem {
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  background-color: var(--background-primary);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-color-light);
+}
+
+.questionItem:hover {
+  background-color: var(--button-hover);
+  transform: translateX(5px);
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode specific styles */
+.dark .categoryBox {
+  background-color: var(--background-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .questionItem {
+  background-color: var(--background-primary-dark);
+  border-color: var(--border-color-light-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcomeContainer {
+    padding: 1rem;
+  }
+  
+  .categoriesContainer {
+    grid-template-columns: 1fr;
+  }
+  
+  .description h1 {
+    font-size: 1.5rem;
+  }
+  
+  .description p {
+    font-size: 1rem;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  .categoryBox {
+    padding: 1rem;
+  }
+  
+  .questionItem {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
 }
