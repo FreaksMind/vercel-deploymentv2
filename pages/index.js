@@ -549,7 +549,7 @@ export default function Home() {
         setLoading(true);
         setMessages((prevMessages) => [...prevMessages, { "message": userInput, "type": "userMessage" }]);
 
-        const response = await fetch("http://localhost:5000/api/post_question", {
+        const response = await fetch("https://3720-2a02-2f00-c50d-5400-b8fd-89de-e474-bcbe.ngrok-free.app/api/post_question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -591,7 +591,7 @@ export default function Home() {
         
         // Send the question to the backend
         try {
-          const response = await fetch("http://localhost:5000/api/post_question", {
+          const response = await fetch("https://3720-2a02-2f00-c50d-5400-b8fd-89de-e474-bcbe.ngrok-free.app/api/post_question", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
