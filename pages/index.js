@@ -579,13 +579,13 @@ export default function Home() {
         setUserInput("")
         setLoading(false);
 
-         const links = extractRelevantLinks(data.answer);
-         setRelevantLinks(links);
+         //const links = extractRelevantLinks(data.answer);
+         //setRelevantLinks(links);
           
          // Auto-open sidebar if there are relevant links
-         if (links.length > 0) {
-           setSidebarOpen(true);
-         }
+         //if (links.length > 0) {
+           //setSidebarOpen(true);
+         //}
     };
 
     const handleQuickQuestionClick = async (question) => {
