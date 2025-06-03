@@ -16,6 +16,10 @@ const settings = {
   autoplay: true
 };
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const KEYWORD_URLS = [
   { phrase: "Timetable", url: "https://edu.info.uaic.ro/orar/" },
   { phrase: "Webmail", url: "https://webmail.info.uaic.ro/" },
@@ -48,6 +52,8 @@ const KEYWORD_URLS = [
   { phrase: "Student Career Services and Alumni", url: "https://www.uaic.ro/studenti/cariera/" },
   { phrase: "Student Representation in Governance", url: "https://www.uaic.ro/studenti/reprezentarea-studentilor-structurile-de-conducere-2/" }
 ];
+
+const SESSION_ID = getRandomInt(0,999999999)
 
 // Categories and questions data
 const CATEGORIES = [
