@@ -7,15 +7,12 @@
   font-family: 'Inter', sans-serif;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden;
   margin: 0;
   padding: 0;
 }
-
 
 body {
   color: #f5f4f4;
