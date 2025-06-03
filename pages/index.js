@@ -560,7 +560,7 @@ export default function Home() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: userInput}),
+            body: JSON.stringify({ question: userInput, session_id: SESSION_ID}),
         });
 
         if (!response.ok) {
@@ -602,7 +602,7 @@ export default function Home() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: question }),
+            body: JSON.stringify({ question: question, session_id: SESSION_ID }),
           });
           
           if (!response.ok) {
