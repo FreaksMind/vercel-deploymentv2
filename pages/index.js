@@ -18,6 +18,12 @@ const settings = {
   autoplay: true
 };
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const SESSION_ID = getRandomInt(0,999999999)
+
 const KEYWORD_URLS = [
   { phrase: "Timetable", url: "https://edu.info.uaic.ro/orar/" },
   { phrase: "Webmail", url: "https://webmail.info.uaic.ro/" },
@@ -1139,7 +1145,7 @@ const handleResourceSelect = (resource) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: userInput}),
+            body: JSON.stringify({ question: userInput, session_id: SESSION_ID}),
         });
 
         if (!response.ok) {
@@ -1181,7 +1187,7 @@ const handleResourceSelect = (resource) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: question }),
+            body: JSON.stringify({ question: question, session_id: SESSION_ID }),
           });
           
           if (!response.ok) {
