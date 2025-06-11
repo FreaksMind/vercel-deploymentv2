@@ -56,7 +56,7 @@
   align-items: center;
   padding: 0.5rem 1rem;
   font-size: 1.5rem;
-  background: var(--input-bg);
+  background: var(--navbar-bg);
   border-bottom: 1px solid #1f2227;
   position: fixed;
   width: 100vw;
@@ -67,7 +67,7 @@
   display: inline-block;
   width: 60px;
   height: 30px;
-  margin-left: 10rem;
+  /* margin-left: 10rem; */
   margin-top: -3.2rem;
 }
 
@@ -238,7 +238,7 @@
   padding: 0.5rem 1rem;
   margin-left: 8px;
   background: var(--button-bg);
-  color: var(--text);
+  color: white;
   transition: background 0.2s ease;
 }
 
@@ -247,7 +247,7 @@
 }
 
 .light .generatebutton:hover {
-  background: #cbc6c6;
+  background: #f9d57c;
 }
 
 .generatebutton:disabled {
@@ -421,19 +421,21 @@
 
 /* === THEMES === */
 .light {
-  --bg: #f7f3ef;           /* Warm light cream */
+  --bg: #f4f6f8;           /* Warm light cream */
   --text: #1a1a1a;
-  --input-bg: #e8e8e4;
+  --input-bg: #ffffff;
   --bubble-bg: #e0e0dc;
-  --button-bg: #d4d4d0;
+  --button-bg: #3f76b7;
+  --navbar-bg: #0a5794; /* Same as --bg */
 }
 
 .dark {
-  --bg:#3C5B6F;
+  --bg:#001244;
   --text: #EAE4D5;
-  --input-bg: #153448;
+  --input-bg: #004984;
   --bubble-bg: #153448;
-  --button-bg: #147487;
+  --button-bg: #6f7788;
+  --navbar-bg: #0a5794;;
 }
 
 /* Audio-specific message styling */
@@ -444,14 +446,24 @@
 }
 
 .light .recordButton{
-  background-color: #147487;
-  color: white;
-}
-.dark .recordButton {
-  background-color: #0a3a44;
+  background-color: #24689f;
   color: white;
 }
 
+.light .recordButton:hover{
+  background-color: #f9d57c;
+  color: white;
+}
+
+.dark .recordButton {
+  background-color: #3f4756;
+  color: white;
+}
+
+.dark .recordButton:hover {
+  background-color: #1f2227;
+  color: white;
+}
 /* === RESOURCES === */
 .resourcesContainer {
   position: relative;
@@ -592,61 +604,6 @@
   color: var(--text, #000);
 }
 
-/* === MOBILE === */
-@media (max-width: 600px) {
-  .main {
-    padding: 1rem;
-    max-height: 90vh;
-  }
-
-  .cloud {
-    width: 22rem;
-    height: 28rem;
-  }
-
-  .inputArea {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .topnav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-  }
-
-  .themeToggle {
-    padding: 0.4rem 0.75rem;
-    border-radius: 0.5rem;
-    background: transparent;
-    border: 1px solid #4b4b4b;
-    color: #ececf1;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-
-  .themeToggle:hover {
-    background: #1f2227;
-  }
-
-  .navlogo {
-    font-size: 1.25rem;
-    width: 20rem;
-  }
-
-  .footer {
-    font-size: 0.7rem;
-  }
-
-  .markdownanswer code {
-    white-space: pre-wrap !important;
-  }
-}
-
-
 /* Audio player styling */
 .audioPlayer {
   max-width: 100%;
@@ -766,17 +723,19 @@
 .questionItem {
   padding: 0.75rem 1rem;
   margin: 0.5rem 0;
-  background-color: #a9d5dd;
+  background-color: #3f76b7;
   border-radius: 8px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
   border: 1px solid var(--border-color-light);
+  color: white
 }
 
 .questionItem:hover {
   background-color: var(--button-hover);
   transform: translateX(5px);
   cursor: pointer;
+  color: black;
 }
 
 /* Animations */
@@ -793,12 +752,12 @@
 
 /* Dark mode specific styles */
 .dark .categoryBox {
-  background-color: #547792;
+  background-color: #004984;
   border-color: var(--border-color-dark);
 }
 
 .dark .questionItem {
-  background-color: #0a3a44;
+  background-color: #3f76b7;
   border-color: var(--border-color-light-dark);
 }
 
@@ -1046,6 +1005,10 @@
   color: #d1d5db;
 }
 
+.dark .universityName {
+  color: #d1d5db;
+}
+
 .slideshowContainer {
   width: 100wv;
   margin: 6rem auto 2rem; 
@@ -1086,11 +1049,11 @@
 .topnav .dropdown,
 .topnav .menu-list {
   position: absolute !important;
-  top: 100% !important; /* Position directly below the topbar */
+  top: 100% !important;
   left: 0 !important;
   right: 0 !important;
   width: 100vw !important;
-  z-index: 999 !important; /* Above content but below topbar */
+  z-index: 999 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   max-height: calc(100vh - 60px) !important;
   overflow-y: auto !important;
@@ -1140,7 +1103,7 @@
   bottom: 10px; /* Adjust position */
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -1187,6 +1150,35 @@
   color: var(--text);
 }
 
+.dark .footerText {
+  color: white;
+}
+
+.languageButton {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  /* margin-right: 1rem; */
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.languageButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode specific styles */
+.dark .languageButton {
+  color: white;
+}
+
+.light .languageButton {
+  color: white;
+}
+
 .universityName {
   font-size: 16px;
   font-weight: 600;
@@ -1222,277 +1214,226 @@
   text-align: center;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .footerCenter {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .universityName {
-    margin-left: 0;
-    text-align: center;
-    font-size: 15px;
-  }
-  
-  .universityInfo,
-  .textContainer {
-    margin-left: 0;
-    align-items: center;
-    text-align: center;
-  }
+.maps-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 0;
 }
 
-@media (max-width: 480px) {
-  .universityName {
-    font-size: 14px;
-  }
-  
-  .facultyName {
-    font-size: 12px;
-  }
+.google-maps-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background-color: #4285f4;
+  color: white;
+  text-decoration: none;
+  border-radius: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 44px;
+  white-space: nowrap;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-  }
+.google-maps-button:hover {
+  background-color: #3367d6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 480px) {
-  .sidebarContent {
-    padding: 12px;
-  }
-  
-  .facultyResource {
-    padding: 12px;
-  }
-  
-  .facultyResourceTitle {
-    font-size: 15px;
-  }
+.google-maps-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-  .sliderWrapper {
-    width: 95%;
-  }
-  
-  .sliderWrapper img {
-    max-height: 300px;
-  }
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Here lies the modified part */
+.maps-icon {
+  font-size: 16px;
+  line-height: 1;
+}
 
-/* Enhanced responsive design for 620px and below with input bar below header */
+.button-text {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.chatbot-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.chat-response {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  border-left: 4px solid #4285f4;
+}
+
+.chat-response p {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.chat-example {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-example:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.footer {
+  padding: 2rem 1rem;
+}
+
+.footerLogos {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 300px;
+}
+
+.footerLogo {
+  width: auto;
+  height: 80px;
+  max-width: 100%;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.universityName,
+.facultyName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.dark .universityName,
+.dark .facultyName {
+  color: white;
+}
+
+.footerText {
+  text-align: center;
+  color: #000;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footerText p {
+  margin: 0.5rem 0;
+}
+
+/* === MOBILE CHANGES === */
 
 @media (max-width: 620px) {
-  /* Keep main container at full viewport height and width */
-  .main {
-    height: 100vh;
-    width: 100vw;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    overflow-y: auto;
-    position: relative;
-    box-sizing: border-box;
-  }
-
-  /* Position input area below header instead of fixed at bottom */
   .inputArea {
-    position: relative !important; /* Changed from fixed */
-    bottom: auto !important;
+    padding: 12px 15px 15px 15px !important;
+    width: 100vw !important;
+    margin: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    width: 100vw !important; /* Full viewport width */
-    max-width: 100vw !important;
-    margin: 0 !important; /* Remove margins to prevent overflow */
-    padding: 15px 20px; /* Top, right, bottom, left */
-    background: var(--bg) !important;
-    border: none !important; /* Remove all borders */
-    box-shadow: none !important; /* Remove shadow */
-    z-index: 100 !important;
     box-sizing: border-box;
   }
 
-  /* Center the input wrapper within the container */
   .inputWrap {
     display: flex !important;
     justify-content: center !important;
-    align-items: center !important;
-    gap: 10px;
+    align-items: stretch !important;
+    gap: 10px !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto;
-    flex-wrap: wrap !important; /* Allow wrapping on very small screens */
+    margin: 0 auto !important;
+    flex-wrap: nowrap !important;
   }
 
-  /* Shrink textarea but keep it centered */
   .textarea {
-    width: 60% !important; /* Takes 60% of available width but centered */
-    min-width: 200px !important;
-    max-width: 400px !important;
-    font-size: 0.85rem !important; /* Shrunk font */
-    padding: 0.6rem !important; /* Shrunk padding */
-    min-height: 36px !important; /* Shrunk height */
-    max-height: 72px !important; /* Shrunk max height */
-    border-radius: 18px !important; /* More rounded for mobile */
-    border: 1px solid #30373d;
-    resize: none;
-    flex: 1 !important; /* Allow textarea to grow */
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 0.85rem !important;
+    padding: 0.6rem !important;
+    min-height: 36px !important;
+    max-height: 72px !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
   }
 
-  /* Make buttons bigger for better usability */
   .recordButton,
   .generatebutton {
-    height: 48px !important; /* Increased from 36px */
-    width: 48px !important; /* Increased from 36px */
-    font-size: 10px !important; /* Smaller font to fit text inside */
-    padding: 0 !important; /* Remove padding for icon-only buttons */
-    border-radius: 50% !important; /* Make circular */
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex-shrink: 0 !important; /* Prevent shrinking */
-    text-align: center !important; /* Center text */
-    line-height: 1.1 !important; /* Tight line height for better fit */
+    box-sizing: border-box !important;
   }
 
-  /* Hide text in buttons on mobile, keep only icons */
-  .recordButton span:not(.icon),
-  .generatebutton span:not(.icon) {
-    display: inline !important; /* Show text instead of hiding */
-    font-size: inherit !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  /* Adjust main content area - no need to account for fixed input anymore */
-  .cloud {
-    height: calc(100vh - 60px) !important; /* Only account for header height */
-    width: 100vw !important;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    overflow-x: hidden !important; /* Prevent horizontal scrolling */
-    overflow-y: auto;
-    padding-top: 60px; /* Account for header */
-    box-sizing: border-box;
-  }
-
-  /* Adjust message list - no need for bottom padding for fixed input */
-  .messagelist {
-    padding: 1rem 15px 15px 15px !important; /* Normal bottom padding */
-    height: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box;
-    overflow-x: hidden !important; /* Prevent horizontal scrolling */
-    overflow-y: auto;
-  }
-
-  /* Shrink chat bubbles */
   .userBubble,
   .botText {
     max-width: 85% !important;
-    font-size: 0.8rem !important; /* Shrunk font */
-    padding: 8px 12px !important; /* Shrunk padding */
+    font-size: 0.8rem !important;
+    padding: 8px 12px !important;
     line-height: 1.3 !important;
-    margin-bottom: 15px !important; /* Reduced margins */
+    margin-bottom: 15px !important;
   }
 
-  .userBubble {
-    border-radius: 15px 15px 4px 15px !important;
-  }
-
-  .botText {
-    border-radius: 15px 15px 15px 4px !important;
-  }
-
-  /* Fixed top navigation - stays in place, doesn't scroll */
-  .topnav {
-    height: 60px !important;
+  .cloud {
+    height: calc(100vh - 55px) !important;
     width: 100vw !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 1rem !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    z-index: 1000 !important; /* Higher z-index to stay above everything */
+    padding-top: 55px !important;
+    overflow-x: hidden !important;
     box-sizing: border-box;
-    overflow: visible !important; /* Allow menu to overflow outside topbar */
+  }
+
+  .topnav {
+    height: 55px !important;
+    width: 100vw !important;
+    padding: 0.4rem 0.8rem !important;
+    left: 0 !important;
+    box-sizing: border-box;
+    overflow: visible !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    /* Let topbar inherit original colors naturally - no overrides */
-  }
-
-  .navlogo {
-    font-size: 0.9rem !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Menu button positioned in the center area - preserve ALL original styling */
-  .menu-button,
-  .hamburger-menu,
-  .nav-menu-button,
-  .topnav button:not(.theme-toggle) {
-    position: relative !important;
-    z-index: 1001 !important; /* Above topbar but below dropdown */
-    margin-left: auto !important;
-    margin-right: 1rem !important;
-    cursor: pointer !important;
-    /* Remove ALL color overrides to preserve original styling */
-  }
-
-  /* Sidebar and overlay elements should appear above main topbar */
-  .sidebar,
-  .side-panel,
-  .overlay,
-  .modal,
-  .resources-sidebar,
-  .sidebar-overlay {
-    z-index: 1100 !important; /* Above main topbar */
-  }
-
-  /* Sidebar topbar/header should be above main topbar */
-  .sidebar .topbar,
-  .sidebar .header,
-  .sidebar .sidebar-header,
-  .side-panel .topbar,
-  .side-panel .header,
-  .resources-sidebar .topbar,
-  .resources-sidebar .header,
-  .sidebar-topbar,
-  .panel-header {
     position: fixed !important;
     top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 1150 !important; /* Highest z-index for sidebar header */
-    background: var(--bg) !important;
-    height: auto !important;
-    min-height: 60px !important;
+    z-index: 1000 !important;
   }
 
-  /* Close button (x) should be easily accessible */
-  .sidebar .close-button,
-  .sidebar .close-btn,
-  .sidebar button[aria-label*="close"],
-  .sidebar button[aria-label*="Close"],
-  .side-panel .close-button,
-  .side-panel .close-btn,
-  .resources-sidebar .close-button,
-  .resources-sidebar .close-btn,
-  .close-sidebar,
-  .sidebar-close {
-    z-index: 1200 !important; /* Highest priority for close button */
-    position: relative !important;
-    cursor: pointer !important;
-  }
-
-  /* Theme toggle positioned on far right, vertically centered */
   .theme-toggle {
     width: 45px !important;
     height: 22px !important;
@@ -1501,62 +1442,6 @@
     align-items: center !important;
     justify-content: center !important;
     flex-shrink: 0 !important;
-  }
-
-  /* Menu dropdown - preserve original colors completely */
-  .menu-dropdown,
-  .nav-menu,
-  .dropdown-menu,
-  .mobile-menu,
-  .topnav .dropdown,
-  .topnav .menu-list {
-    position: absolute !important; /* Changed from fixed to absolute */
-    top: 100% !important; /* Position directly below the topbar */
-    left: 0 !important;
-    right: 0 !important;
-    width: 100vw !important;
-    z-index: 999 !important; /* Below topbar but above content */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    max-height: calc(100vh - 60px) !important;
-    overflow-y: auto !important;
-    box-sizing: border-box !important;
-    transform: translateY(0) !important; /* Ensure it appears below topbar */
-    /* Let menu inherit original background and border colors naturally */
-  }
-
-  /* Ensure menu content is properly styled */
-  .menu-dropdown ul,
-  .nav-menu ul,
-  .dropdown-menu ul,
-  .mobile-menu ul {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .menu-dropdown li,
-  .nav-menu li,
-  .dropdown-menu li,
-  .mobile-menu li {
-    /* Let border colors inherit naturally */
-  }
-
-  .menu-dropdown a,
-  .nav-menu a,
-  .dropdown-menu a,
-  .mobile-menu a {
-    display: block !important;
-    padding: 1rem 1.5rem !important;
-    text-decoration: none !important;
-    font-size: 0.9rem !important;
-    /* Let text colors inherit naturally */
-  }
-
-  .menu-dropdown a:hover,
-  .nav-menu a:hover,
-  .dropdown-menu a:hover,
-  .mobile-menu a:hover {
-    /* Let hover colors inherit naturally */
   }
 
   .slider {
@@ -1577,77 +1462,18 @@
   }
 
   .icon {
-    font-size: 10px !important; /* Shrunk */
-  }
-
-  /* Shrink welcome container elements */
-  .welcomeContainer {
-    padding: 1rem 15px !important;
-    margin-bottom: 1rem !important;
-  }
-
-  .description h1 {
-    font-size: 1.4rem !important; /* Shrunk */
-    margin-bottom: 0.5rem !important;
-  }
-
-  .description p {
-    font-size: 0.85rem !important; /* Shrunk */
-    line-height: 1.4 !important;
+    font-size: 10px !important;
   }
 
   .apptitle {
-    font-size: 1.8rem !important; /* Shrunk */
+    font-size: 1.8rem !important;
   }
 
   .appdescription {
-    font-size: 0.85rem !important; /* Shrunk */
+    font-size: 0.85rem !important;
     margin: 0.5rem !important;
   }
 
-  /* Shrink categories */
-  .categoriesContainer {
-    grid-template-columns: 1fr !important; /* Single column */
-    gap: 0.8rem !important;
-    margin-top: 1rem !important;
-    padding: 0 15px !important;
-  }
-
-  .categoryBox {
-    padding: 0.8rem !important; /* Shrunk */
-    border-radius: 8px !important;
-  }
-
-  .categoryBox h3 {
-    font-size: 0.9rem !important; /* Shrunk */
-    margin: 0 0 0.5rem 0 !important;
-  }
-
-  /* Shrink quick questions */
-  .quickQuestionsContainer {
-    padding: 0.5rem 15px !important;
-  }
-
-  .quickQuestionsContainer h2 {
-    font-size: 1.1rem !important; /* Shrunk */
-    margin-bottom: 0.5rem !important;
-  }
-
-  .quickQuestionsContainer button {
-    padding: 0.5rem 0.7rem !important;
-    margin-bottom: 0.3rem !important;
-    font-size: 0.8rem !important; /* Shrunk */
-    border-radius: 6px !important;
-  }
-
-  .questionItem {
-    padding: 0.5rem 0.7rem !important;
-    margin: 0.2rem 0 !important;
-    font-size: 0.75rem !important; /* Shrunk */
-    border-radius: 5px !important;
-  }
-
-  /* Shrink footer */
   .footer {
     padding: 0.5rem 15px !important;
     font-size: 0.65rem !important;
@@ -1665,91 +1491,207 @@
     font-size: 10px !important;
   }
 
-  /* Shrink slideshow */
-  .sliderWrapper img {
-    max-height: 180px !important;
+  .recordButton span:not(.icon),
+  .generatebutton span:not(.icon) {
+    display: inline !important;
+    font-size: inherit !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
-  .descriptionBox {
-    padding: 4px 6px !important;
-    font-size: 0.65rem !important;
-    border-radius: 3px !important;
-  }
-
-  /* Shrink resource elements */
-  .facultyResourceButton {
-    padding: 4px 8px !important;
-    font-size: 10px !important;
-    border-radius: 8px !important;
-  }
-
-  .resourcesButton {
-    height: 24px !important;
-    padding: 3px 6px !important;
-    font-size: 10px !important;
-  }
-
-  /* Enhanced dark/light mode support for input area */
-  .dark .inputArea {
-    background: var(--bg) !important;
-    border: none !important; /* Remove border */
-    box-shadow: none !important; /* Remove shadow */
-  }
-
-  .light .inputArea {
-    background: var(--bg) !important;
-    border: none !important; /* Remove border */
-    box-shadow: none !important; /* Remove shadow */
+  .maps-buttons-container {
+    gap: 8px;
   }
   
-  /* Remove dark/light mode color overrides for menu to preserve original colors */
-}
-
-/* Extra small screens - input elements wrap to multiple lines */
-@media (max-width: 480px) {
-  .inputArea {
-    padding: 12px 15px 15px 15px !important;
-    width: 100vw !important; /* Ensure full viewport width */
-    margin: 0 !important; /* Remove margins to prevent overflow */
-    left: 0 !important;
-    right: 0 !important;
+  .google-maps-button {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+  
+  .chatbot-container {
+    padding: 12px;
   }
 
-  /* Allow input elements to wrap on small screens */
+  .footer {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .footerLogos {
+    gap: 1.5rem;
+  }
+  
+  .footerLogo {
+    height: 60px;
+  }
+  
+  .universityName,
+  .facultyName {
+    font-size: 0.9rem;
+  }
+  
+  .footerText {
+    font-size: 0.85rem;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+    max-height: 90vh;
+  }
+
+  .cloud {
+    width: 22rem;
+    height: 28rem;
+  }
+
+  .inputArea {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+  }
+
+  .themeToggle {
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    border: 1px solid #4b4b4b;
+    color: #ececf1;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .themeToggle:hover {
+    background: #1f2227;
+  }
+
+  .navlogo {
+    font-size: 1.25rem;
+    width: 20rem;
+  }
+
+  .footer {
+    font-size: 0.7rem;
+  }
+
+  .markdownanswer code {
+    white-space: pre-wrap !important;
+  }
+
+  .google-maps-button {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 18px;
+  }
+  
+  .button-text {
+    font-size: 12px;
+  }
+  
+  .maps-icon {
+    font-size: 13px;
+  }
+  
+  .button-content {
+    gap: 6px;
+  }
+
+  .footerLogos {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .logoContainer {
+    max-width: 280px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .sidebarContent {
+    padding: 12px;
+  }
+
+  .facultyResource {
+    padding: 12px;
+  }
+
+  .facultyResourceTitle {
+    font-size: 15px;
+  }
+
+  .universityName {
+    font-size: 14px;
+  }
+
+  .facultyName {
+    font-size: 12px;
+  }
+
+  .inputArea {
+    padding: 12px 15px 15px 15px !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box;
+  }
+
   .inputWrap {
-    flex-direction: column !important; /* Stack vertically on very small screens */
-    gap: 8px !important;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
   }
 
   .textarea {
-    width: 100% !important; /* Full width when stacked */
-    min-width: auto !important;
+    width: 100% !important;
     max-width: none !important;
-    font-size: 0.8rem !important;
-    padding: 0.5rem !important;
     min-height: 32px !important;
     max-height: 64px !important;
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 12px !important;
   }
 
-  /* Create a button container for horizontal layout with larger width buttons */
   .inputWrap > .recordButton,
   .inputWrap > .generatebutton {
-    height: 56px !important; /* Keep same height */
-    width: 140px !important; /* Even larger width for separate lines */
-    font-size: 12px !important; /* Slightly larger font */
-    border-radius: 28px !important; /* Pill shape */
+    height: 56px !important;
+    width: 140px !important;
+    font-size: 12px !important;
+    border-radius: 28px !important;
     flex-shrink: 0 !important;
   }
 
-  /* Create a button row when textarea is full width */
   .inputWrap > :not(.textarea) {
     display: flex !important;
     justify-content: center !important;
     gap: 15px !important;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
   }
 
   .messagelist {
-    padding: 1rem 10px 15px 10px !important; /* Normal bottom padding */
+    padding: 1rem 10px 15px 10px !important;
   }
 
   .topnav {
@@ -1758,17 +1700,15 @@
     padding: 0.4rem 0.8rem !important;
     left: 0 !important;
     box-sizing: border-box;
-    overflow: visible !important; /* Allow menu to overflow */
+    overflow: visible !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     position: fixed !important;
     top: 0 !important;
     z-index: 1000 !important;
-    /* Let topbar inherit original colors naturally - no background override */
   }
 
-  /* Menu button for smaller screens - preserve ALL original styling */
   .menu-button,
   .hamburger-menu,
   .nav-menu-button,
@@ -1778,10 +1718,8 @@
     margin-left: auto !important;
     margin-right: 1rem !important;
     cursor: pointer !important;
-    /* Remove ALL color overrides to preserve original styling */
   }
 
-  /* Theme toggle positioned on far right, vertically centered */
   .theme-toggle {
     width: 45px !important;
     height: 22px !important;
@@ -1792,7 +1730,6 @@
     flex-shrink: 0 !important;
   }
 
-  /* Adjust menu position for smaller screens - preserve original colors */
   .menu-dropdown,
   .nav-menu,
   .dropdown-menu,
@@ -1800,7 +1737,7 @@
   .topnav .dropdown,
   .topnav .menu-list {
     position: absolute !important;
-    top: 100% !important; /* Position directly below the smaller topbar */
+    top: 100% !important;
     left: 0 !important;
     right: 0 !important;
     width: 100vw !important;
@@ -1810,14 +1747,304 @@
     overflow-y: auto !important;
     box-sizing: border-box !important;
     transform: translateY(0) !important;
-    /* Let menu inherit original background and border colors naturally */
   }
 
   .cloud {
-    height: calc(100vh - 55px) !important; /* Only account for header */
+    height: calc(100vh - 55px) !important;
     width: 100vw !important;
     padding-top: 55px !important;
     overflow-x: hidden !important;
     box-sizing: border-box;
+  }
+
+  .inputWrap {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .textarea {
+    width: 100% !important;
+    min-height: 40px !important;
+    max-height: 200px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 12px !important;
+    flex: 2;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;  /* Prevent horizontal growth */
+    resize: none !important;
+    line-height: 1.5;
+    box-sizing: border-box;
+    transition: height 0.2s ease-in-out;
+    white-space: pre-wrap; /* Wrap long lines instead of horizontal scrolling */
+    word-break: break-word;
+  }
+
+  .recordButton,
+  .generatebutton {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    flex: 1;
+    max-width: 80px;
+  }
+
+  .audioPlayer {
+      max-width: 100% !important;
+      width: 100% !important;
+      height: 40px !important;
+      background: #2a2b2d !important;
+      border-radius: 12px !important;
+      padding: 4px !important;
+      box-sizing: border-box !important;
+      display: block !important;
+    }
+
+    .userBubble audio,
+    .botText audio {
+      width: 100% !important;
+      max-width: 100% !important;
+      border-radius: 10px !important;
+    }
+
+   .google-maps-button {
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 16px;
+    min-height: 40px;
+  }
+  
+  .button-text {
+    font-size: 11px;
+  }
+  
+  .maps-icon {
+    font-size: 12px;
+  }
+  
+  .button-content {
+    gap: 5px;
+  }
+  
+  .chatbot-container {
+    padding: 8px;
+  }
+  
+  .chat-response {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .footer {
+    padding: 1rem 0.5rem;
+  }
+  
+  .footerLogos {
+    gap: 1.5rem;
+  }
+  
+  .logoContainer {
+    max-width: 250px;
+  }
+  
+  .footerLogo {
+    height: 50px;
+  }
+  
+  .universityName,
+  .facultyName {
+    font-size: 0.85rem;
+  }
+  
+  .footerText {
+    font-size: 0.8rem;
+  }
+  
+  .footerText p {
+    margin: 0.25rem 0;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .inputWrap {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .textarea {
+    width: 100% !important;
+    min-height: 40px !important;
+    max-height: 100px !important;
+    box-sizing: border-box !important;
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 12px !important;
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .recordButton,
+  .generatebutton {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .recordButton span:not(.icon),
+  .generatebutton span:not(.icon) {
+    display: inline !important;
+    font-size: inherit !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .maps-buttons-container {
+    gap: 10px;
+    margin-top: 12px;
+  }
+  
+  .google-maps-button {
+    padding: 10px 14px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
+  
+  .button-text {
+    font-size: 13px;
+  }
+  
+  .maps-icon {
+    font-size: 14px;
+  }
+  
+  .chatbot-container {
+    padding: 16px;
+  }
+
+  .footerLogos {
+    gap: 2rem;
+  }
+  
+  .footerLogo {
+    height: 70px;
+  }
+  
+  .universityName,
+  .facultyName {
+    font-size: 0.95rem;
+  }
+}
+
+/* Desktop Navigation Container */
+.desktopNavItems {
+  display: flex;
+  gap: 1.5rem;
+  margin-right: auto;
+  margin-left: 1rem;
+  align-items: center;
+}
+
+/* Desktop Navigation Links (text style) */
+.desktopNavLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white; /* Default light text for dark mode */
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  padding: 0.25rem 0;
+}
+
+.desktopResourceItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 32px;
+  white-space: nowrap;
+}
+
+.dark .desktopResourceItem {
+  background-color: var(--bg);
+  color: white;
+}
+
+.dark .desktopResourceItem:hover {
+  background-color: #1b1b1b;
+}
+
+.light .desktopResourceItem {
+  background-color: white;
+  color: black;
+}
+
+.light .desktopResourceItem:hover {
+  background-color: #cbc6c6;
+}
+
+.desktopNavLink:hover {
+  opacity: 0.8;
+  text-decoration: underline; /* Optional underline on hover */
+}
+
+/* Icon styling (optional) */
+.desktopNavLink .resourceIcon {
+  margin-right: 1px;
+}
+
+/* Mobile styles - hide desktop items on mobile */
+@media (max-width: 767px) {
+  .desktopNavItems {
+    display: none;
+  }
+  
+  .resourcesContainer {
+    margin-left: auto;
+  }
+}
+
+/* Desktop styles - hide mobile menu button on desktop */
+@media (min-width: 768px) {
+  .resourcesContainer {
+    display: none;
   }
 }
