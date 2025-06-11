@@ -6,6 +6,8 @@ import ReactMarkdown from 'react-markdown'
 import CircularProgress from '@mui/material/CircularProgress';
 import { ChevronDown, ChevronUp, ShoppingBag, Star, MapPin, ChevronRight, Globe, FileText, Users, ExternalLink, X, BookText, Newspaper, Contact, House, Clock9, Menu, University, BanknoteArrowUp, BanknoteArrowDown, Image as ImageIcon, Music, Book } from 'lucide-react';
 import Slider from "react-slick";
+import enTranslations from '../components/translations/en.js';
+import roTranslations from '../components/translations/ro.js';
 
 const settings = {
   dots: true,
@@ -15,10 +17,6 @@ const settings = {
   slidesToScroll: 1,
   autoplay: true
 };
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 const KEYWORD_URLS = [
   { phrase: "Timetable", url: "https://edu.info.uaic.ro/orar/" },
@@ -53,47 +51,6 @@ const KEYWORD_URLS = [
   { phrase: "Student Representation in Governance", url: "https://www.uaic.ro/studenti/reprezentarea-studentilor-structurile-de-conducere-2/" }
 ];
 
-const SESSION_ID = getRandomInt(0,999999999)
-
-// Categories and questions data
-const CATEGORIES = [
-  {
-    name: "Admission",
-    questions: [
-      "What are the admission requirements for Bachelor's programs?",
-      "What documents are needed for Master's admission?",
-      "When does the admission process start?",
-      "Are there any admission exams?"
-    ]
-  },
-  {
-    name: "Academic Life",
-    questions: [
-      "Where can I find my schedule?",
-      "How do I access educational resources?",
-      "What are the exam session periods?",
-      "How does the grading system work?"
-    ]
-  },
-  {
-    name: "Student Services",
-    questions: [
-      "How do I apply for scholarships?",
-      "What housing options are available?",
-      "Where are the canteens located?",
-      "How do I pay my tuition fees?"
-    ]
-  },
-  {
-    name: "University Resources",
-    questions: [
-      "Where can I find the latest university news?",
-      "How do I contact the faculty administration?",
-      "What research opportunities are available?",
-      "Where can I find academic regulations?"
-    ]
-  }
-];
 
 export default function Home() {
     const [userInput, setUserInput] = useState("");
@@ -103,36 +60,63 @@ export default function Home() {
     const [activeCategory, setActiveCategory] = useState(null);
 
     const [resourcesOpen, setResourcesOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const [selectedResource, setSelectedResource] = useState(null);
     const resourcesRef = useRef(null);
+
+    const [audioUrl, setAudioUrl] = useState(null);
+    const mediaRecorderRef = useRef(null);
+    const recordInterval = useRef(null);
 
     const messageListRef = useRef(null);
     const textAreaRef = useRef(null);
     const [isRecording, setIsRecording] = useState(false);
     const [recordTime, setRecordTime] = useState(0);
+    const [language, setLanguage] = useState(null);
+
     const [isDarkMode, setIsDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
             return localStorage.getItem('theme') === 'dark';
         }
         return true;
     });
+  
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem('language') || 'en';
+    setLanguage(storedLanguage);
+  }, []);
+  
+  // Get translations
+  const t = language === 'en' ? enTranslations : roTranslations;
 
-  const [audioUrl, setAudioUrl] = useState(null);
-  const mediaRecorderRef = useRef(null);
-  const recordInterval = useRef(null);
+  const toggleLanguage = () => {
+    setLanguage(prev => {
+      const newLanguage = prev === 'en' ? 'ro' : 'en';
+      localStorage.setItem('language', newLanguage);
+      return newLanguage;
+    });
+  };
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const resources = [
-    { id: 1, name: 'Schedule', icon: Clock9, url: 'https://edu.info.uaic.ro/orar/' },
-    { id: 2, name: 'Courses', icon: BookText, url: 'https://edu.info.uaic.ro/' },
-    { id: 3, name: 'News', icon: Newspaper, url: 'https://www.info.uaic.ro/noutati/' },
-    { id: 4, name: 'Contact', icon: Contact, url: 'https://www.info.uaic.ro/contact/' },
-    { id: 5, name: 'Admission', icon: University, url: 'https://www.info.uaic.ro/admitere/' },
-    { id: 6, name: 'Scholarship', icon: BanknoteArrowUp, url: 'https://www.uaic.ro/studenti/burse/' },
-    { id: 7, name: 'Taxes', icon: BanknoteArrowDown, url: 'https://plati-taxe.uaic.ro/' },
-    { id: 8, name: 'Housing', icon: House, url: 'https://www.uaic.ro/studenti/cazare/' }
+    { id: 1, name: t.resources.schedule, icon: Clock9, url: 'https://edu.info.uaic.ro/orar/' },
+    { id: 2, name: t.resources.courses, icon: BookText, url: 'https://edu.info.uaic.ro/' },
+    { id: 3, name: t.resources.news, icon: Newspaper, url: 'https://www.info.uaic.ro/noutati/' },
+    { id: 4, name: t.resources.contact, icon: Contact, url: 'https://www.info.uaic.ro/contact/' },
+    { id: 5, name: t.resources.admission, icon: University, url: 'https://www.info.uaic.ro/admitere/' },
+    { id: 6, name: t.resources.scholarship, icon: BanknoteArrowUp, url: 'https://www.uaic.ro/studenti/burse/' },
+    { id: 7, name: t.resources.taxes, icon: BanknoteArrowDown, url: 'https://plati-taxe.uaic.ro/' },
+    { id: 8, name: t.resources.housing, icon: House, url: 'https://www.uaic.ro/studenti/cazare/' }
   ];
+
+  const CATEGORIES = [
+  t.categories.admission,
+  t.categories.academicLife,
+  t.categories.studentServices,
+  t.categories.universityResources
+];
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const facultyLinks = [
   {
@@ -423,9 +407,563 @@ export default function Home() {
     description: "Software Engineering master's program schedule for Year 2 Group 2.",
     url: "https://edu.info.uaic.ro/orar/participanti/orar_MISS22.html",
     logo: "/FiiLogo.png",
-    keywords: ["MISS22", "ISS22", "error"]
+    keywords: ["MISS22", "ISS22"]
   }
 ];
+
+const imagesLinks = [
+  {
+    id: 1,
+    logo: "/Akademos1.jpg",
+    keywords: ["campus", "campus Akademos", "Akademos campus"]
+  },
+  {
+    id: 2,
+    logo: "/AlexandruIoanCuzaUniversity1.png",
+    keywords: ["Alexandru Ioan Cuza university", "Alexandru Ioan Cuza University", "Universitatea Alexandru Ioan Cuza", "universitatea Alexandru Ioan Cuza", "universitate", "university"]
+  },
+  {
+    id: 3,
+    logo: "/AlexandruIoanCuzaUniversity2.png",
+    keywords: ["Alexandru Ioan Cuza university", "Alexandru Ioan Cuza University", "Universitatea Alexandru Ioan Cuza", "universitatea Alexandru Ioan Cuza", "universitate", "university"]
+  },
+  {
+    id: 4,
+    logo: "/BunaVestire1.jpg",
+    keywords: ["campus", "campus Buna Vestire", "Buna Vestire campus"]
+  },
+  {
+    id: 5,
+    logo: "/BunaVestire2.jpg",
+    keywords: ["campus", "campus Buna Vestire", "Buna Vestire campus"]
+  },
+  {
+    id: 6,
+    logo: "/Codrescu1.jpg",
+    keywords: ["campus", "campus Codrescu", "Codrescu campus"]
+  },
+  {
+    id: 7,
+    logo: "/ErasmusCafeteria1.jpg",
+    keywords: ["Erasmus cafeteria", "cafenea Erasmus", "erasmus cafeteria", "cafenea erasmus", "cafeteria", "cafenea"]
+  },
+  {
+    id: 8,
+    logo: "/ErasmusCafeteria2.jpg",
+    keywords: ["Erasmus cafeteria", "cafenea Erasmus", "erasmus cafeteria", "cafenea erasmus", "cafeteria", "cafenea"]
+  },
+  {
+    id: 9,
+    logo: "/FacultyOfComputerScience1.png",
+    keywords: ["Faculty of Computer Science", "Faculty of computer science", "faculty of computer science", "faculty", "facultate", "Facultatea de Informatică", "Facultatea de Informatica", "Facultatea de informatică", "facultatea de informatică"]
+  },
+  {
+    id: 10,
+    logo: "/Gaudeamus1.jpg",
+    keywords: ["campus", "campus Gaudeamus", "Gaudeamus campus"]
+  },
+  {
+    id: 11,
+    logo: "/GaudeamusCanteen1.jpg",
+    keywords: ["Gaudeamus canteen", "cantina Gaudeamus", "canteen", "cantină"]
+  },
+  {
+    id: 12,
+    logo: "/TargusorCopou1.jpg",
+    keywords: ["Târgușor Copou", "campus Târgușor Copou", "Târgușor Copou campus", "Targusor Copou", "campus Targusor Copou", "Targusor Copou campus"]
+  },
+  {
+    id: 13,
+    logo: "/TituMaiorescuCampus1.jpeg",
+    keywords: ["campus", "Titu Maiorescu campus", "campus Titu Maiorescu"]
+  },
+  {
+    id: 14,
+    logo: "/TituMaiorescuCampus2.jpeg",
+    keywords: ["campus", "Titu Maiorescu campus", "campus Titu Maiorescu"]
+  },
+  {
+    id: 15,
+    logo: "/TituMaiorescuCampus3.jpeg",
+    keywords: ["campus", "Titu Maiorescu campus", "campus Titu Maiorescu"]
+  },
+  {
+    id: 16,
+    logo: "/TituMaiorescuCampus4.jpg",
+    keywords: ["campus", "Titu Maiorescu campus", "campus Titu Maiorescu"]
+  },
+  {
+    id: 17,
+    logo: "/TituMaiorescuCanteen1.jpeg",
+    keywords: ["canteen", "Titu Maiorescu canteen", "cantină", "cantina Titu Maiorescu"]
+  },
+  {
+    id: 18,
+    logo: "/TituMaiorescuCanteen2.jpg",
+    keywords: ["canteen", "Titu Maiorescu canteen", "cantină", "cantina Titu Maiorescu"]
+  },
+]
+
+const mapsLinks = [
+  {
+    id: 1,
+    name: "Akademos campus",
+    mapsLink: "https://www.google.com/maps/place/Akademos/@47.1691284,27.5747013,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb64ed96f26f:0xfe832f20fd7e01da!8m2!3d47.1691284!4d27.5747013!16s%2Fg%2F1tqcjqp3?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["campus", "campus Akademos", "Akademos campus"]
+  },
+  {
+    id: 2,
+    name: "Alexandru Ioan Cuza University",
+    mapsLink: "https://www.google.com/maps/place/Universitatea+%E2%80%9EAlexandru+Ioan+Cuza%E2%80%9D/@47.1743589,27.571504,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb61af5ef507:0x95f1e37c73c23e74!8m2!3d47.1743589!4d27.571504!16zL20vMDk0NXEw?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["Alexandru Ioan Cuza university", "Alexandru Ioan Cuza University", "Universitatea Alexandru Ioan Cuza", "universitatea Alexandru Ioan Cuza", "universitate", "university"]
+  },
+  {
+    id: 3,
+    name: "Buna Vestire campus",
+    mapsLink: "https://www.google.com/maps/place/Camin+%22Buna+Vestire%22,+Universitatea+A.+I.+Cuza/@47.1621475,27.5811882,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb7d74b113db:0x3418cd7ed5a56e32!8m2!3d47.1621475!4d27.5811882!16s%2Fg%2F11j48g0srt?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["campus", "campus Buna Vestire", "Buna Vestire campus"]
+  },
+  {
+    id: 4,
+    name: "Codrescu campus",
+    mapsLink: "https://www.google.com/maps/place/Campus+Codrescu/@47.1771235,27.5551043,14z/data=!4m10!1m2!2m1!1scodrescu!3m6!1s0x40cafc9fcf1c33ef:0x25167f5b9d7cf226!8m2!3d47.1771235!4d27.5726138!15sCghjb2RyZXNjdZIBFnN0dWRlbnRfaG91c2luZ19jZW50ZXKqAT8QASoMIghjb2RyZXNjdSgWMh8QASIbMz6dCs2cctm3wDzdSVGm66b1cf2Y4XXCYcvgMgwQAiIIY29kcmVzY3XgAQA!16s%2Fg%2F1hm36f0yw?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["campus", "campus Codrescu", "Codrescu campus"]
+  },
+  {
+    id: 5,
+    name: "Erasmus cafeteria",
+    mapsLink: "https://www.google.com/maps/place/Erasmus+Cafe+(La+Balen%C4%83)/@47.1758303,27.5706437,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb603f1988cb:0x90fceeba026e4e56!8m2!3d47.1758303!4d27.5706437!16s%2Fg%2F1pp2x5sgj?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["Erasmus cafeteria", "cafenea Erasmus", "erasmus cafeteria", "cafenea erasmus", "cafeteria", "cafenea"]
+  },
+  {
+    id: 6,
+    name: "Faculty of Computer Science",
+    mapsLink: "https://www.google.com/maps/place/Facultatea+de+Informatic%C4%83/@47.1737831,27.5747212,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb6227e846bd:0x193e4b6864504e2c!8m2!3d47.1737831!4d27.5747212!16s%2Fg%2F1pp2wydwb?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["Faculty of Computer Science", "Faculty of computer science", "faculty of computer science", "faculty", "facultate", "Facultatea de Informatică", "Facultatea de Informatica", "Facultatea de informatică", "facultatea de informatică"]
+  },
+  {
+    id: 7,
+    name: "Gaudeamus campus",
+    mapsLink: "https://www.google.com/maps/place/C%C4%83minul+de+studen%C8%9Bi+Gaudeamus/@47.1777044,27.5725253,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafc9fc05c488f:0x6904d15a27ccde0b!8m2!3d47.1777044!4d27.5725253!16s%2Fg%2F1ptz4p2c2?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["campus", "campus Gaudeamus", "Gaudeamus campus"]
+  },
+  {
+    id: 8,
+    name: "Gaudeamus canteen",
+    mapsLink: "https://www.google.com/maps/place/C%C4%83minul+de+studen%C8%9Bi+Gaudeamus/@47.1777044,27.5725253,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafc9fc05c488f:0x6904d15a27ccde0b!8m2!3d47.1777044!4d27.5725253!16s%2Fg%2F1ptz4p2c2?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["Gaudeamus canteen", "cantina Gaudeamus", "canteen", "cantină"]
+  },
+  {
+    id: 9,
+    name: "Targusor Copou campus",
+    mapsLink: "https://www.google.com/maps/place/Campus+T%C3%A2rgu%C8%99or+Copou/@47.188576,27.561715,17z/data=!4m6!3m5!1s0x40cafcafe6378489:0x10fa553f7a947109!8m2!3d47.1886999!4d27.5631312!16s%2Fg%2F1hm3bvbjm?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["Târgușor Copou", "campus Târgușor Copou", "Târgușor Copou campus", "Targusor Copou", "campus Targusor Copou", "Targusor Copou campus"]
+  },
+  {
+    id: 10,
+    name: "Titu Maiorescu campus",
+    mapsLink: "https://www.google.com/maps/place/Campus+Titu+Maiorescu/@47.1754484,27.5692032,16.84z/data=!4m6!3m5!1s0x40cafb005ba06131:0x7d8b241b413f4f4f!8m2!3d47.1759135!4d27.5710146!16s%2Fg%2F11ltr1x3mg?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["campus", "Titu Maiorescu campus", "campus Titu Maiorescu"]
+  },
+  {
+    id: 11,
+    name: "Titu Maiorescu canteen",
+    mapsLink: "https://www.google.com/maps/place/Cantina+Titu+Maiorescu/@47.174586,27.5698253,17z/data=!3m1!4b1!4m6!3m5!1s0x40cafb60f7c6a295:0x33b3c2d5d5a08fe!8m2!3d47.174586!4d27.5698253!16s%2Fg%2F1pp2x66k9?entry=ttu&g_ep=EgoyMDI1MDYwOC4wIKXMDSoASAFQAw%3D%3D",
+    keywords: ["canteen", "Titu Maiorescu canteen", "cantină", "cantina Titu Maiorescu"]
+  }
+]
+
+const GoogleMapsButtons = ({ message = "" }) => {
+  const findRelevantLinks = (message) => {
+    if (!message || typeof message !== 'string') return [];
+    
+    const messageLower = message.toLowerCase();
+    const relevantLinks = [];
+    
+    mapsLinks.forEach(link => {
+      const hasKeyword = link.keywords.some(keyword => 
+        messageLower.includes(keyword.toLowerCase())
+      );
+      
+      if (hasKeyword) {
+        relevantLinks.push(link);
+      }
+    });
+    
+    return relevantLinks;
+  };
+
+  // Get relevant links based on the message
+  const relevantLinks = findRelevantLinks(message);
+
+  // Don't render anything if no relevant links found
+  if (relevantLinks.length === 0) {
+    return null;
+  }
+
+  // Create buttons for relevant links
+  const createMapButtons = () => {
+    return relevantLinks.map((link) => (
+      <a
+        key={link.id}
+        href={link.mapsLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="google-maps-button"
+      >
+        <div className="button-content">
+          <div className="maps-icon">📍</div>
+          <span className="button-text">{link.name}</span>
+        </div>
+      </a>
+    ));
+  };
+
+  return (
+    <div className="maps-buttons-container">
+      {createMapButtons()}
+    </div>
+  );
+};
+
+  const ImageGallery = ({ images, message }) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageLoadErrors, setImageLoadErrors] = useState({});
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
+  const handleImageError = (imageId) => {
+    setImageLoadErrors(prev => ({ ...prev, [imageId]: true }));
+  };
+
+  const handleImageLoad = (imageId) => {
+    setImageLoadErrors(prev => ({ ...prev, [imageId]: false }));
+  };
+
+  const styles = {
+    messageContainer: {
+      maxWidth: '800px',
+      margin: '0 auto',
+      padding: '20px'
+    },
+    imageGallery: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '12px',
+      marginBottom: '20px',
+      alignItems: 'flex-start',
+      marginLeft: '-0px'
+    },
+    imageWrapper: {
+      position: 'relative',
+      width: '180px',
+      height: '180px',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      cursor: 'pointer',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      background: '#f8f9fa',
+      flexShrink: 0,
+      border: '1px solid #e9ecef'
+    },
+    imageWrapperHover: {
+      transform: 'translateY(-4px)',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+    },
+    galleryImage: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      objectPosition: 'center',
+      transition: 'transform 0.3s ease',
+      background: '#f8f9fa',
+      display: 'block'
+    },
+    imagePlaceholder: {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+      color: '#6c757d'
+    },
+    placeholderContent: {
+      textAlign: 'center'
+    },
+    placeholderIcon: {
+      display: 'block',
+      fontSize: '32px',
+      marginBottom: '8px'
+    },
+    placeholderText: {
+      margin: 0,
+      fontSize: '12px',
+      fontWeight: 500,
+      maxWidth: '140px',
+      lineHeight: 1.3
+    },
+    imageOverlay: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%)',
+      color: 'white',
+      padding: '16px 12px 12px',
+      transform: 'translateY(100%)',
+      transition: 'transform 0.3s ease'
+    },
+    imageOverlayVisible: {
+      transform: 'translateY(0)'
+    },
+    imageTitle: {
+      fontSize: '12px',
+      fontWeight: 600,
+      lineHeight: 1.3,
+      textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+    },
+    chatbotMessage: {
+      background: '#f8f9fa',
+      padding: '20px',
+      borderRadius: '12px',
+      borderLeft: '4px solid #007bff',
+      fontSize: '16px',
+      lineHeight: 1.6,
+      color: '#333',
+      marginLeft: '0px'
+    },
+    modalOverlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0, 0, 0, 0.9)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      padding: '20px'
+    },
+    modalContent: {
+      position: 'relative',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      background: 'white',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    },
+    modalClose: {
+      position: 'absolute',
+      top: '15px',
+      right: '15px',
+      background: 'rgba(0, 0, 0, 0.5)',
+      border: 'none',
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      color: 'white',
+      zIndex: 1001,
+      transition: 'background 0.2s ease'
+    },
+    modalImage: {
+      width: '100%',
+      maxHeight: '60vh',
+      objectFit: 'contain',
+      background: '#f8f9fa'
+    },
+    modalInfo: {
+      padding: '20px'
+    },
+    modalTitle: {
+      margin: '0 0 10px 0',
+      fontSize: '24px',
+      color: '#333'
+    },
+    modalDescription: {
+      margin: 0,
+      color: '#666',
+      lineHeight: 1.6
+    }
+  };
+
+  // Responsive adjustments based on screen size
+  const getResponsiveStyles = () => {
+    const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 1024;
+    
+    if (screenWidth <= 360) {
+      return {
+        imageWrapper: { ...styles.imageWrapper, width: '105px', height: '105px' },
+        imageTitle: { ...styles.imageTitle, fontSize: '8px' },
+        messageContainer: { ...styles.messageContainer, padding: '10px' },
+        imageGallery: { ...styles.imageGallery, gap: '8px' },
+        chatbotMessage: { ...styles.chatbotMessage, fontSize: '14px', padding: '12px' }
+      };
+    } else if (screenWidth <= 480) {
+      return {
+        imageWrapper: { ...styles.imageWrapper, width: '115px', height: '115px' },
+        imageTitle: { ...styles.imageTitle, fontSize: '9px' },
+        messageContainer: { ...styles.messageContainer, padding: '10px' },
+        imageGallery: { ...styles.imageGallery, gap: '8px' },
+        chatbotMessage: { ...styles.chatbotMessage, fontSize: '14px', padding: '12px' }
+      };
+    } else if (screenWidth <= 600) {
+      return {
+        imageWrapper: { ...styles.imageWrapper, width: '125px', height: '125px' },
+        imageTitle: { ...styles.imageTitle, fontSize: '10px' },
+        messageContainer: { ...styles.messageContainer, padding: '15px' },
+        imageGallery: { ...styles.imageGallery, gap: '10px' }
+      };
+    } else if (screenWidth <= 620) {
+      return {
+        imageWrapper: { ...styles.imageWrapper, width: '135px', height: '135px' },
+        imageTitle: { ...styles.imageTitle, fontSize: '10px' },
+        imageGallery: { ...styles.imageGallery, gap: '10px' }
+      };
+    } else if (screenWidth <= 768) {
+      return {
+        imageWrapper: { ...styles.imageWrapper, width: '150px', height: '150px' },
+        imageTitle: { ...styles.imageTitle, fontSize: '11px' },
+        messageContainer: { ...styles.messageContainer, padding: '15px' },
+        chatbotMessage: { ...styles.chatbotMessage, fontSize: '15px', padding: '15px' }
+      };
+    }
+    
+    return {};
+  };
+
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  const responsiveStyles = getResponsiveStyles();
+  const [hoveredImage, setHoveredImage] = useState(null);
+
+  return (
+    <div style={{ ...styles.messageContainer, ...responsiveStyles.messageContainer }}>
+      {/* Image Gallery - Only show if there are images */}
+      {images && images.length > 0 && (
+        <div style={{ ...styles.imageGallery, ...responsiveStyles.imageGallery }}>
+          {images.map((image, index) => (
+            <div
+              key={image.id || index}
+              style={{
+                ...styles.imageWrapper,
+                ...responsiveStyles.imageWrapper,
+                ...(hoveredImage === image.id ? styles.imageWrapperHover : {})
+              }}
+              onClick={() => openModal(image)}
+              onMouseEnter={() => setHoveredImage(image.id)}
+              onMouseLeave={() => setHoveredImage(null)}
+            >
+              {imageLoadErrors[image.id] ? (
+                <div style={styles.imagePlaceholder}>
+                  <div style={styles.placeholderContent}>
+                    <span style={styles.placeholderIcon}>📷</span>
+                    <p style={styles.placeholderText}>{image.title}</p>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={image.logo}
+                  alt={image.title}
+                  style={{
+                    ...styles.galleryImage,
+                    ...(hoveredImage === image.id ? { transform: 'scale(1.05)' } : {})
+                  }}
+                  onError={() => handleImageError(image.id)}
+                  onLoad={() => handleImageLoad(image.id)}
+                />
+              )}
+              <div style={{
+                ...styles.imageOverlay,
+                ...(hoveredImage === image.id ? styles.imageOverlayVisible : {})
+              }}>
+                <div style={{ ...styles.imageTitle, ...responsiveStyles.imageTitle }}>
+                  {image.title}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Modal */}
+      {selectedImage && (
+        <div style={styles.modalOverlay} onClick={closeModal}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button 
+              style={styles.modalClose} 
+              onClick={closeModal}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.7)'}
+              onMouseLeave={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.5)'}
+            >
+              <X size={24} />
+            </button>
+            {imageLoadErrors[selectedImage.id] ? (
+              <div style={{
+                width: '100%',
+                height: '300px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#f8f9fa',
+                color: '#6c757d'
+              }}>
+                <span style={{ fontSize: '48px', marginBottom: '16px' }}>📷</span>
+                <p>Image could not be loaded</p>
+              </div>
+            ) : (
+              <img
+                src={selectedImage.logo}
+                style={styles.modalImage}
+                onError={() => handleImageError(selectedImage.id)}
+              />
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+  const getMatchingImages = (message, facultyLinks) => {
+    if (!message || !facultyLinks) return [];
+    
+    const messageLower = message.toLowerCase();
+    const matchingImages = [];
+    
+    facultyLinks.forEach(link => {
+      const hasMatch = link.keywords.some(keyword => 
+        messageLower.includes(keyword.toLowerCase())
+      );
+      if (hasMatch) {
+        matchingImages.push(link);
+      }
+    });
+    
+    return matchingImages;
+  };
 
   const filteredLinks = (message) => {
     if(message.length) {
@@ -487,23 +1025,64 @@ export default function Home() {
     );
   };
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-        if (resourcesRef.current && !resourcesRef.current.contains(event.target)) {
-            setResourcesOpen(false);
-        }
-    }
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //       if (resourcesRef.current && !resourcesRef.current.contains(event.target)) {
+  //           setResourcesOpen(false);
+  //       }
+  //   }
 
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //       document.removeEventListener('mousedown', handleClickOutside);
+  //   }
+  // }, [resourcesRef]);
+  useEffect(() => {
+  function handleResize() {
+    setIsMobile(window.innerWidth < 768); // Typical breakpoint for mobile
+  }
+  
+  // Set initial value
+  handleResize();
+  
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (resourcesRef.current && !resourcesRef.current.contains(event.target)) {
+      setResourcesOpen(false);
+    }
+  }
+
+  // Only add listener if mobile and menu is open
+  if (isMobile && resourcesOpen) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [resourcesRef]);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }
+}, [resourcesRef, resourcesOpen, isMobile]);
 
+const handleResourceSelect = (resource) => {
+  setResourcesOpen(false);
+
+  if(resource.url) {
+    window.open(resource.url, '_blank', 'noopener,noreferrer');
+  }
+};
+
+  // useEffect(() => {
+  //   const messageList = messageListRef.current;
+  //   messageList.scrollTop = messageList.scrollHeight;
+  // }, [messages]);
   useEffect(() => {
-    const messageList = messageListRef.current;
-    messageList.scrollTop = messageList.scrollHeight;
-  }, [messages]);
+  if (messageListRef.current) {
+    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  }
+}, [messages]);
+
 
     useEffect(() => {
         if(textAreaRef.current) textAreaRef.current.focus();
@@ -533,7 +1112,7 @@ export default function Home() {
 
     const handleError = () => {
         setMessages((prevMessages) => [...prevMessages, {
-            "message": "Oops! There seems to be an error. Please try again.",
+            "message": t.messages.error,
             "type": "apiMessage"
         }]);
         setLoading(false);
@@ -555,12 +1134,12 @@ export default function Home() {
         setLoading(true);
         setMessages((prevMessages) => [...prevMessages, { "message": userInput, "type": "userMessage" }]);
 
-        const response = await fetch("https://43c3-62-217-241-123.ngrok-free.app/api/post_question", {
+        const response = await fetch("http://localhost:5000/api/post_question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: userInput, session_id: SESSION_ID}),
+            body: JSON.stringify({ question: userInput}),
         });
 
         if (!response.ok) {
@@ -579,13 +1158,13 @@ export default function Home() {
         setUserInput("")
         setLoading(false);
 
-         //const links = extractRelevantLinks(data.answer);
-         //setRelevantLinks(links);
+         const links = extractRelevantLinks(data.answer);
+         setRelevantLinks(links);
           
          // Auto-open sidebar if there are relevant links
-         //if (links.length > 0) {
-           //setSidebarOpen(true);
-         //}
+         if (links.length > 0) {
+           setSidebarOpen(true);
+         }
     };
 
     const handleQuickQuestionClick = async (question) => {
@@ -597,12 +1176,12 @@ export default function Home() {
         
         // Send the question to the backend
         try {
-          const response = await fetch("https://43c3-62-217-241-123.ngrok-free.app/api/post_question", {
+          const response = await fetch("http://localhost:5000/api/post_question", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ question: question, session_id: SESSION_ID }),
+            body: JSON.stringify({ question: question }),
           });
           
           if (!response.ok) {
@@ -621,7 +1200,7 @@ export default function Home() {
           setMessages((prevMessages) => [...prevMessages, { "message": data.answer, "type": "apiMessage" }]);
           setLoading(false);
         } catch (error) {
-          console.error("Error sending quick question:", error);
+          console.error(t.messages.errorQuickQuestion, error);
           handleError();
         }
     };
@@ -652,13 +1231,13 @@ export default function Home() {
         }
     };
 
-    const handleResourceSelect = (resource) => {
-        setResourcesOpen(false);
+    // const handleResourceSelect = (resource) => {
+    //     setResourcesOpen(false);
 
-        if(resource.url) {
-          window.open(resource.url, '_blank', 'noopener,noreferrer');
-        }
-    };
+    //     if(resource.url) {
+    //       window.open(resource.url, '_blank', 'noopener,noreferrer');
+    //     }
+    // };
 
     const handleSidebarResourceClick = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -731,83 +1310,116 @@ export default function Home() {
             setIsRecording(false);
             setMessages(prev => [...prev, {
                 "message": error.message.includes('permission') ? 
-                    "Microphone access denied. Please allow microphone permissions." :
-                    "Recording failed. Please try again.",
+                    t.audioRecorder.audioPermissionError :
+                    t.audioRecorder.audioError,
                 "type": "apiMessage"
             }]);
         }
     };
 
-    return (
-    <>
-        <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <title>FiiHelp</title>
-        </Head>
+    if (language === null) return null;
 
-      <div className={isDarkMode ? styles.dark : styles.light}>
-        <div className={styles.topnav}>
-            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1rem 0 0' }}>
-                <Image src="/logo.png" alt="UAIC Logo" width={48} height={48} />
-            </a>
-          <div className={styles.resourcesContainer} ref={resourcesRef}>
-              <button 
-                onClick={() => setResourcesOpen(!resourcesOpen)}
-                className={styles.resourcesButton}
-              >
-                <Menu />
-              </button>
-              
-              {resourcesOpen && (
-                <div className={styles.resourcesDropdown}>
-                  <ul>
-                    {resources.map((resource) => {
-                      const IconComponent = resource.icon;
-                      return (
-                        <li key={resource.id}>
-                          <button 
-                            onClick={() => handleResourceSelect(resource)}
-                            className={styles.resourceItem}
-                          >
-                            {IconComponent && <IconComponent size={16} className={styles.resourceIcon} />}
-                            <span>{resource.name}</span>
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-          <div className = {styles.navlinks}>
-            <label className={styles["theme-toggle"]}>
-                              <input
-                                  type="checkbox"
-                                  checked={!isDarkMode}
-                                  onChange={() => {
-                                      setIsDarkMode((prev) => {
-                                          const newTheme = !prev;
-                                          localStorage.setItem("theme", newTheme ? "dark" : "light");
-                                          return newTheme;
-                                      });
-                                  }}
-                              />
-                              <span className={styles.slider}>
-        <span className={`${styles.icon} ${styles.sun}`}>🌙</span>
-        <span className={`${styles.icon} ${styles.moon}`}>☀️</span>
-      </span>
-                          </label>
+return (
+  <>
+    <Head>
+      <title>FIIHelp</title>
+    </Head>
+    <div className={isDarkMode ? styles.dark : styles.light}>
+      <div className={styles.topnav}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1rem 0 0' }}>
+          <Image src="/logo.png" alt="App Logo" width={50} height={50} />
+        </a>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1rem 0 0' }}>
+          <Image src="/logoFii.png" alt="Fii Logo" width={50} height={50} />
+        </a>
+        
+        {/* Desktop Navigation Items */}
+        {!isMobile && (
+          <div className={styles.desktopNavItems}>
+            {resources.map((resource) => {
+              const IconComponent = resource.icon;
+              return (
+                <a
+                  key={resource.id}
+                  onClick={() => handleResourceSelect(resource)}
+                  className={styles.desktopNavLink}
+                >
+                  {IconComponent && <IconComponent size={16} className={styles.resourceIcon} />}
+                  <span>{resource.name}</span>
+                </a>
+              );
+            })}
           </div>
+        )}
+        
+        {/* Mobile Menu Button and Dropdown */}
+        {isMobile && (
+          <div className={styles.resourcesContainer} ref={resourcesRef}>
+            <button 
+              onClick={() => setResourcesOpen(!resourcesOpen)}
+              className={styles.resourcesButton}
+            >           
+              <Menu />
+            </button>
+            
+            {resourcesOpen && (
+              <div className={styles.resourcesDropdown}>
+                <ul>
+                  {resources.map((resource) => {
+                    const IconComponent = resource.icon;
+                    return (
+                      <li key={resource.id}>
+                        <button 
+                          onClick={() => handleResourceSelect(resource)}
+                          className={styles.resourceItem}
+                        >
+                          {IconComponent && <IconComponent size={16} className={styles.resourceIcon} />}
+                          <span>{resource.name}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Language and Theme Toggle (should be outside mobile menu) */}
+        <div className={styles.navlinks}>
+          <button 
+            onClick={toggleLanguage}
+            className={styles.languageButton}
+          >
+            {language === 'en' ? 'RO' : 'EN'}
+          </button>
+          <label className={styles["theme-toggle"]}>
+            <input
+              type="checkbox"
+              checked={!isDarkMode}
+              onChange={() => {
+                setIsDarkMode((prev) => {
+                  const newTheme = !prev;
+                  localStorage.setItem("theme", newTheme ? "dark" : "light");
+                  return newTheme;
+                });
+              }}
+            />
+            <span className={styles.slider}>
+              <span className={`${styles.icon} ${styles.sun}`}>🌙</span>
+              <span className={`${styles.icon} ${styles.moon}`}>☀️</span>
+            </span>
+          </label>
         </div>
+      </div>
         <main className={styles.main}>
           <div className = {styles.cloud}>
             <div ref={messageListRef} className = {styles.messagelist}>
               {messages.length === 0 ? (
                 <div className={styles.welcomeContainer}>
                   <div className={styles.description}>
-                    <h1>Welcome to FiiHelp Assistant</h1>
-                    <p>Your virtual assistant for all questions related to the Faculty of Computer Science (FII). 
-                    Get instant answers about admissions, academic programs, student services and more.</p>
+                    <h1>{t.welcome.title}</h1>
+                    <p>{t.welcome.description}</p>
                   </div>
                   <div className={styles.center}>
             <div className={styles.cloudform}>
@@ -822,21 +1434,20 @@ export default function Home() {
                     type="text"
                     id="userInput"
                     name="userInput"
-                    placeholder={loading ? "Waiting for response..." : "Type your question..."}
+                    placeholder={loading ? t.messages.waitResponse : t.messages.inputPlaceholder}
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     className={styles.textarea}
                   />
 
-                    <button
-                        type="button"
-                        disabled={loading}
-                        onClick={handleRecord}
-                        className={styles.recordButton}
-                        title={isRecording ? "Stop Recording" : "Start Recording"}
-                    >
-                        {isRecording ? "⏹" : "🎤"}
-                    </button>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={handleRecord}
+                    className={styles.recordButton}
+                  >
+                    {isRecording ? t.audioRecorder.stop : t.audioRecorder.start}
+                  </button>
 
                   <button
                     type="submit"
@@ -860,7 +1471,7 @@ export default function Home() {
               {isRecording && (
                 <div className={styles.recordingIndicator}>
                   <div className={styles.recordingDot}></div>
-                  ⏱️ Recording: {recordTime}s
+                  ⏱️ {t.audioRecorder.recording}: {recordTime}s
                 </div>
               )}
             </div>
@@ -899,89 +1510,89 @@ export default function Home() {
                         <div className={styles.slide}>
                           <img src="/BCU1.jpg" alt="Central University Library" />
                           <div className={styles.descriptionBox}>
-                            <p>Central University Library – A historic library in Iași.</p>
-                            <a href="http://site-vechi.bcu-iasi.ro/" target="_blank" rel="noopener noreferrer">Visit Website</a>
+                            <p>{t.slideShowMessages.titles.bcu}</p>
+                            <a href="http://site-vechi.bcu-iasi.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/BCU3.jpg" alt="Central University Library" />
                           <div className={styles.descriptionBox}>
-                            <p>Central University Library – A historic library in Iași.</p>
-                            <a href="http://site-vechi.bcu-iasi.ro/" target="_blank" rel="noopener noreferrer">Visit Website</a>
+                            <p>{t.slideShowMessages.titles.bcu}</p>
+                            <a href="http://site-vechi.bcu-iasi.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/GradinaBotanica1.png" alt="Botanical Garden Anastasie Fatu" />
                           <div className={styles.descriptionBox}>
-                            <p>Botanical Garden Anastasie Fatu</p>
-                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.botanicalGarden}</p>
+                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/GradinaBotanica2.jpg" alt="Botanical Garden Anastasie Fatu" />
                           <div className={styles.descriptionBox}>
-                            <p>Botanical Garden Anastasie Fatu</p>
-                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.botanicalGarden}</p>
+                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/GradinaBotanica4.webp" alt="Botanical Garden Anastasie Fatu" />
                           <div className={styles.descriptionBox}>
-                            <p>Botanical Garden Anastasie Fatu</p>
-                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.botanicalGarden}</p>
+                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                          <div className={styles.slide}>
                           <img src="/GradinaBotanica6.webp" alt="Botanical Garden Anastasie Fatu" />
                           <div className={styles.descriptionBox}>
-                            <p>Botanical Garden Anastasie Fatu</p>
-                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.botanicalGarden}</p>
+                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                           <div className={styles.slide}>
                           <img src="/GradinaBotanica9.webp" alt="Botanical Garden Anastasie Fatu" />
                           <div className={styles.descriptionBox}>
-                            <p>Botanical Garden Anastasie Fatu</p>
-                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.botanicalGarden}</p>
+                            <a href="https://www.botanica.uaic.ro/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/informatica1.jpg" alt="Studenti" />
                           <div className={styles.descriptionBox}>
-                            <p>Students working in the Informatics classrooms.</p>
+                            <p>{t.slideShowMessages.titles.fiifaculty}</p>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/informatica2.jpg" alt="Studenti" />
                           <div className={styles.descriptionBox}>
-                            <p>Students working in the Informatics classrooms.</p>
+                            <p>{t.slideShowMessages.titles.fiifaculty}</p>
                           </div>
                         </div>
                           <div className={styles.slide}>
                           <img src="/Gaudeamus.webp" alt="Gaudeamus Canteen" />
                           <div className={styles.descriptionBox}>
-                            <p>Gaudeamus Canteen</p>
+                            <p>{t.slideShowMessages.titles.canteen}</p>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/muzeuluniversitatii.jpg" alt="University Museum" />
                           <div className={styles.descriptionBox}>
-                            <p>University Museum</p>
-                            <a href="https://www.uaic.ro/muzeul-universitatii-alexandru-ioan-cuza/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.museum}</p>
+                            <a href="https://www.uaic.ro/muzeul-universitatii-alexandru-ioan-cuza/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                         <div className={styles.slide}>
                           <img src="/salaPasilorPierduti1.jpg" alt="Sala Pasilor Pierduti" />
                           <div className={styles.descriptionBox}>
-                            <p>"Sala Pasilor Pierduti"</p>
-                            <a href="https://www.uaic.ro/despre-uaic/prezentare-sala-pasilor-pierduti/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.hall}</p>
+                            <a href="https://www.uaic.ro/despre-uaic/prezentare-sala-pasilor-pierduti/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                           <div className={styles.slide}>
                           <img src="/sala_pasilor_pierduti.jpg" alt="Sala Pasilor Pierduti" />
                           <div className={styles.descriptionBox}>
-                            <p>"Sala Pasilor Pierduti"</p>
-                            <a href="https://www.uaic.ro/despre-uaic/prezentare-sala-pasilor-pierduti/" target="_blank" rel="noopener noreferrer">Explore More</a>
+                            <p>{t.slideShowMessages.titles.hall}</p>
+                            <a href="https://www.uaic.ro/despre-uaic/prezentare-sala-pasilor-pierduti/" target="_blank" rel="noopener noreferrer">{t.slideShowMessages.exploreMessage}</a>
                           </div>
                         </div>
                       </Slider>
@@ -989,19 +1600,32 @@ export default function Home() {
                   </div>
                 </div>
 
-                  <footer className={styles.footer}>
-                    <div className={styles.footerCenter}>
+                <footer className={styles.footer}>
+                  <div className={styles.footerLogos}>
+                    <div className={styles.logoContainer}>
                       <img src="/logo_uaic.png" alt="Logo 1" className={styles.footerLogo} />
-                      <span className={styles.universityName}>"Alexandru Ioan Cuza" University of Iași</span>
+                      <span className={styles.universityName}>Universitatea "Alexandru Ioan Cuza" din Iași</span>
                     </div>
-                    <div className={styles.footerText}>
-                      <p>© 2025 FiiHelp Assistant. Developed by students of the Master's program in Computational Linguistics under the guidance of Ionut Pistol.</p>
-                      <p>Contact us at: fiihelpuaicassistant@gmail.com</p>
+                    <div className={styles.logoContainer}>
+                      <img src="/logo_faculty.png" alt="Logo 2" className={styles.footerLogo} />
+                      <span className={styles.facultyName}>Facultatea de Informatică</span>
                     </div>
-                  </footer>
+                  </div>
+                  <div className={styles.footerText}>
+                    <p>{t.footer.aboutUs}</p>
+                    <p>{t.footer.contact}: fiihelpuaicassistant@gmail.com</p>
+                  </div>
+                </footer>
                 </div>
               ) : (
                 messages.reduce((acc, message, index) => {
+                  if(message.type === "apiMessage" && getMatchingImages(message.message, imagesLinks).length > 0) {
+                      acc.push(
+                          <ImageGallery
+                            images={getMatchingImages(message.message, imagesLinks)}
+                          />
+                      );
+                  }
                   acc.push(
                   <div 
                      key={index}
@@ -1037,7 +1661,11 @@ export default function Home() {
                         </div>
                       );
                     }
-
+                        if(message.type === "apiMessage") {
+                          acc.push(
+                              <GoogleMapsButtons message={message.message} />
+                          );
+                        }
                     return acc;
                  }, []) 
                 )
@@ -1059,34 +1687,40 @@ export default function Home() {
                     type="text"
                     id="userInput"
                     name="userInput"
-                    placeholder={loading ? "Waiting for response..." : "Type your question..."}
+                    placeholder={loading ? t.messages.waitResponse : t.messages.inputPlaceholder}
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     className={styles.textarea}
                   />
 
-                    <button
-                        type="button"
-                        disabled={loading}
-                        onClick={handleRecord}
-                        className={styles.recordButton}
-                    >
-                        🎤
-                    </button>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={handleRecord}
+                    className={styles.recordButton}
+                  >
+                    {isRecording ? t.audioRecorder.stop : t.audioRecorder.start}
+                  </button>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={styles.generatebutton}
-                    >
-                        ⬆️
+                  <button
+                      type="submit"
+                      disabled={loading}
+                      className={styles.generatebutton}
+                  >
+                    {loading ? (
+                        <div className={styles.loadingwheel}>
+                          <CircularProgress color="inherit" size={20}/>
+                        </div>
+                    ) : (
+                        ">"
+                    )}
                   </button>
                 </div>
               </form>
               {isRecording && (
                 <div className={styles.recordingIndicator}>
                   <div className={styles.recordingDot}></div>
-                  ⏱️ Recording: {recordTime}s
+                  ⏱️ {t.audioRecorder.recording}: {recordTime}s
                 </div>
               )}
             </div>
