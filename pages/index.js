@@ -1140,7 +1140,7 @@ const handleResourceSelect = (resource) => {
         setLoading(true);
         setMessages((prevMessages) => [...prevMessages, { "message": userInput, "type": "userMessage" }]);
 
-        const response = await fetch("https://72af-194-176-167-89.ngrok-free.app/api/post_question", {
+        const response = await fetch("http://localhost:5000/api/post_question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1182,7 +1182,7 @@ const handleResourceSelect = (resource) => {
         
         // Send the question to the backend
         try {
-          const response = await fetch("https://72af-194-176-167-89.ngrok-free.app/api/post_question", {
+          const response = await fetch("http://localhost:5000/api/post_question", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
